@@ -1,4 +1,4 @@
-module github.com/nhaumann/livox-go-wrapper
+module livox_wrapper
 
 go 1.19
 
