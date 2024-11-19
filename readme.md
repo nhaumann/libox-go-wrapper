@@ -165,7 +165,7 @@ func main() {
 
 1. Clone with submodules:
 ```bash
-git clone https://github.com/yourusername/livox-go-wrapper.git
+git clone https://github.com/nhaumann/livox-go-wrapper.git
 cd livox-go-wrapper
 ```
 
