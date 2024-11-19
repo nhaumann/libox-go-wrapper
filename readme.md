@@ -2,7 +2,6 @@
 
 A Go wrapper for the Livox LiDAR SDK that provides simple access to Livox devices through channels and Go-idiomatic interfaces.
 
-
 ## Prerequisites
 
 - Windows 10 or later
@@ -25,75 +24,63 @@ livox-go-wrapper/
 └── CMakeLists.txt      # CMake configuration
 ```
 
-## Installation
+## Building from Source
 
-1. Clone the repository:
+### Prerequisites
+
+1. Install Visual Studio 2017
+   - Ensure C++ desktop development is selected during installation
+
+2. Install CMake
+   - Download from https://cmake.org/download/
+   - Add to system PATH
+
+3. Install Go
+   - Download from https://golang.org/dl/
+   - Add to system PATH
+
+### Building the Package
+
+1. Clone the repository and SDK:
 ```bash
-git clone https://github.com/yourusername/livox-go-wrapper.git
+git clone https://github.com/nhaumann/livox-go-wrapper.git
 cd livox-go-wrapper
+git submodule add https://github.com/Livox-SDK/Livox-SDK.git
 ```
 
-2. Build using make (this will handle all steps including SDK setup):
+2. Build Livox SDK:
 ```bash
-make
+cd Livox-SDK
+mkdir build
+cd build
+cmake .. -G "Visual Studio 15 2017 Win64"
+cmake --build . --config Release
+cd ../..
 ```
 
-Or build step by step:
+3. Build the wrapper:
+```bash
+mkdir build
+cd build
+cmake .. -G "Visual Studio 15 2017 Win64"
+cmake --build . --config Release
+cd ..
+```
+
+The wrapper DLL will be created at `build/bin/Release/livox_wrapper.dll`.
+
+## Usage
+
+### Import the Package
+
+In your Go project:
 
 ```bash
-# Initialize and build Livox SDK
-make init
-make build_sdk
-
-# Build the wrapper
-make build_wrapper
-
-# Build Go application
-make build_go
+go get github.com/nhaumann/livox-go-wrapper/go/livox
 ```
 
+### Basic Example
 
-## Point Cloud Data Structure
-
-The `Point` struct represents a single point in 3D space:
-
-```go
-type Point struct {
-    X         float32  // X coordinate in meters
-    Y         float32  // Y coordinate in meters
-    Z         float32  // Z coordinate in meters
-    Intensity float32  // Normalized intensity (0.0-1.0)
-}
-```
-
-## API Reference
-
-### Scanner
-
-```go
-// Create a new scanner
-scanner := livox.NewScanner(bufferSize int)
-
-// Start scanning
-err := scanner.Start()
-
-// Stop scanning
-scanner.Stop()
-
-// Get point cloud channel
-pointChan := scanner.PointCloud()
-
-// Get device events channel
-deviceChan := scanner.DeviceEvents()
-
-// Get list of connected devices
-devices := scanner.GetDevices()
-```
-
-
-## Usage Examples
-
-### Basic Connection Example
 ```go
 package main
 
@@ -134,7 +121,10 @@ func main() {
         for cloud := range scanner.PointCloud() {
             log.Printf("Received point cloud from device %d: %d points", 
                 cloud.DeviceHandle, len(cloud.Points))
-            // Process point cloud data here
+            // Process points
+            for _, point := range cloud.Points {
+                _ = point // Process each point (X, Y, Z, Intensity)
+            }
         }
     }()
 
@@ -145,39 +135,57 @@ func main() {
 }
 ```
 
+### Data Types
 
-## Building from Source
+```go
+// Point represents a single point in 3D space
+type Point struct {
+    X         float32  // X coordinate in meters
+    Y         float32  // Y coordinate in meters
+    Z         float32  // Z coordinate in meters
+    Intensity float32  // Normalized intensity (0.0-1.0)
+}
 
-### Prerequisites
+// PointCloud represents a collection of points from a single scan
+type PointCloud struct {
+    DeviceHandle uint8
+    Points       []Point
+}
 
-1. Install Visual Studio 2017
-   - Ensure C++ desktop development is selected during installation
+// Device represents a connected Livox device
+type Device struct {
+    Handle        uint8
+    BroadcastCode string
+}
 
-2. Install CMake
-   - Download from https://cmake.org/download/
-   - Add to system PATH
-
-3. Install Go
-   - Download from https://golang.org/dl/
-   - Add to system PATH
-
-### Build Steps
-
-1. Clone with submodules:
-```bash
-git clone https://github.com/nhaumann/livox-go-wrapper.git
-cd livox-go-wrapper
+// DeviceEvent represents a device connection/disconnection event
+type DeviceEvent struct {
+    Device    Device
+    Connected bool
+}
 ```
 
-2. Build everything:
-```bash
-make
-```
+### API Reference
 
-The build process will:
-1. Clone and build the Livox SDK
-2. Build the C wrapper library
-3. Build the Go package and example application
+```go
+// Create a new scanner with specified buffer size
+scanner := livox.NewScanner(bufferSize int)
+
+// Start scanning
+err := scanner.Start()
+
+// Stop scanning
+scanner.Stop()
+
+// Get point cloud channel (receive data)
+pointChan := scanner.PointCloud()
+
+// Get device events channel (monitor connections)
+deviceChan := scanner.DeviceEvents()
+
+// Get list of connected devices
+devices := scanner.GetDevices()
+```
 
 ## Troubleshooting
 
@@ -195,9 +203,13 @@ The build process will:
 
 3. **Go build fails**
    - Check that CGO is enabled (set CGO_ENABLED=1)
-   - Verify all DLLs are in the correct locations
+   - Verify wrapper DLL is in the correct location
    - Check PATH includes Visual Studio build tools
 
+4. **Package import fails**
+   - Ensure correct import path: `github.com/nhaumann/livox-go-wrapper/go/livox`
+   - Run `go mod tidy` to update dependencies
+   - Verify go.mod file exists in project root
 
 ## Acknowledgments
 
