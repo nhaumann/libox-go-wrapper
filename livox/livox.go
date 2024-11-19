@@ -6,8 +6,7 @@ package livox
 #include "livox_sdk.h"
 
 #cgo CFLAGS: -I${SRCDIR}/../include
-#cgo LDFLAGS: -L${SRCDIR}/../build/Release -llivox_wrapper
-#cgo LDFLAGS: -L${SRCDIR}/../libs -llivox_wrapper -llivox_sdk_static
+#cgo LDFLAGS: -L${SRCDIR}/../include -llivox_wrapper -llivox_sdk_static
 
 #include "livox_wrapper.h"
 
