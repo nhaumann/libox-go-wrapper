@@ -23,7 +23,6 @@
 *.idb
 *.ilk
 *.exp
-*.lib
 
 # Go binaries and artifacts
 *.exe
