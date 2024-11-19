@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(livox_go_wrapper)
 
-# Specify the paths to the Livox SDK relative to project root
+# Specify the updated paths to the Livox SDK relative to project root
 set(LIVOX_SDK_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Livox-SDK")
 set(LIVOX_SDK_INCLUDE "${LIVOX_SDK_PATH}/sdk_core/include")
 set(LIVOX_SDK_LIB "${LIVOX_SDK_PATH}/build/sdk_core/Release")

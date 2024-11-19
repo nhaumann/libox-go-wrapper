@@ -1,13 +1,13 @@
-package livox_wrapper
+package livox
 
 /*
 #include <stdint.h>
 #include <stdlib.h>
 #include "livox_sdk.h"
 
-#cgo CFLAGS: -I${SRCDIR}/../../include -I${SRCDIR}/../../Livox-SDK/sdk_core/include
-#cgo LDFLAGS: -L${SRCDIR}/../../build/Release -llivox_wrapper
-#cgo LDFLAGS: -L${SRCDIR}/../../Livox-SDK/build/sdk_core/Release -llivox_sdk_static
+#cgo CFLAGS: -I${SRCDIR}/../Livox-sdk/sdk_core/include -I${SRCDIR}/../include
+#cgo LDFLAGS: -L${SRCDIR}/../build/Release -llivox_wrapper
+#cgo LDFLAGS: -L${SRCDIR}/../Livox-sdk/build/sdk_core/Release -llivox_sdk_static
 
 #include "livox_wrapper.h"
 
