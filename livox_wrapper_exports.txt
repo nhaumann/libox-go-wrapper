@@ -1,0 +1,6 @@
+Microsoft (R) COFF/PE Dumper Version 14.16.27045.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file G:\repo\livox-go-wrapper\build\Release\livox_wrapper.dll
+LINK : fatal error LNK1181: cannot open input file 'G:\repo\livox-go-wrapper\build\Release\livox_wrapper.dll'

@@ -1,0 +1,56 @@
+# Exclude Livox-SDK directory entirely
+/Livox-SDK/
+
+# Build directories
+/build/
+**/Debug/
+**/Release/
+**/x64/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.log
+*.tlog
+*.lastbuildstate
+*.obj
+*.pdb
+*.idb
+*.ilk
+*.exp
+*.lib
+
+# Go binaries and artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go workspace file
+go.work
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Windows specific
+Thumbs.db
+Desktop.ini
+
+# Debug logs
+*.log
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+*.dir/
